@@ -18,7 +18,7 @@ phases:
       - echo Writing image definitions file...
       - sed -i'' -e "s/%AWS_DEFAULT_REGION%/${AWS_DEFAULT_REGION}/g" Dockerrun.aws.json
       - sed -i'' -e "s/%AWS_ACCOUNT_ID%/${AWS_ACCOUNT_ID}/g" Dockerrun.aws.json
-      - cat ./web/.env
+      - cat Dockerrun.aws.json
 artifacts:
   files:
     - Dockerrun.aws.json

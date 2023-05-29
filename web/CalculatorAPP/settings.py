@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG=config("DEBUG")
 SECRET_KEY = config("SECRET_KEY")
 
-ALLOWED_HOSTS = ["dev-asbx2.us-east-2.elasticbeanstalk.com"]
+ALLOWED_HOSTS = ["dev-asbx.us-east-2.elasticbeanstalk.com"]
 
 CSRF_COOKIE_NAME = "XSRF-TOKEN"
 
