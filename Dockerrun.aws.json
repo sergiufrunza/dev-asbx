@@ -14,24 +14,12 @@
         }
       ]
     },
-//    {
-//      "name": "redis",
-//      "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-redis:latest",
-//      "hostname": "redis",
-//      "essential": true,
-//      "portMappings": [
-//        {
-//          "hostPort": 6379,
-//          "containerPort": 6379
-//        }
-//      ],
-//      "memory": 1024
-//    },
     {
       "name": "dev-app",
       "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-app:latest",
       "hostname": "dev-app",
       "essential": true,
+      "command": ["python", "manage.py","runserver"],
       "memory": 2048,
       "portMappings": [
         {
@@ -59,15 +47,6 @@
       ],
       "memory": 512
     }
-//    {
-//      "name": "worker",
-//      "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-worker:latest",
-//      "hostname": "worker",
-//      "essential": true,
-//      "links": [
-//        "database", "redis"
-//      ],
-//      "memory": 2048
-//    }
+
   ]
 }
