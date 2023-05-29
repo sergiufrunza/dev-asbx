@@ -12,14 +12,14 @@ services:
    - POSTGRES_USER=dbuser
    - POSTGRES_PASSWORD=pass
 
- redis:
-  build:
-   context: ./redis
-  image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/dev-redis
-  restart: unless-stopped
-  container_name: redis
-  expose:
-   - 6379
+# redis:
+#  build:
+#   context: ./redis
+#  image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/dev-redis
+#  restart: unless-stopped
+#  container_name: redis
+#  expose:
+#   - 6379
 
  dev-app:
   build:
@@ -37,7 +37,7 @@ services:
 #   && gunicorn CalculatorAPP.wsgi:application --bind :8000 --timeout 1800"
   depends_on:
    - database
-   - redis
+#   - redis
 
  nginx:
    build:
@@ -52,16 +52,16 @@ services:
    depends_on:
      - dev-app
 
- worker:
-  build:
-   context: .
-  container_name: worker
-  restart: unless-stopped
-  image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/dev-worker
-  command: celery -A CalculatorAPP worker -l info
-  links:
-   - redis
-  depends_on:
-   - redis
-   - dev-app
-   - database
+# worker:
+#  build:
+#   context: .
+#  container_name: worker
+#  restart: unless-stopped
+#  image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/dev-worker
+#  command: celery -A CalculatorAPP worker -l info
+#  links:
+#   - redis
+#  depends_on:
+#   - redis
+#   - dev-app
+#   - database
