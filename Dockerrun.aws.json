@@ -23,7 +23,7 @@
       "memory": 2048,
       "portMappings": [
         {
-          "hostPort": 8000,
+          "hostPort": 80,
           "containerPort": 8000
         }
       ],
@@ -31,22 +31,5 @@
         "database"
       ]
     },
-    {
-      "name": "nginx",
-      "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-nginx:latest",
-      "hostname": "nginx",
-      "essential": true,
-      "portMappings": [
-        {
-          "hostPort": 80,
-          "containerPort": 80
-        }
-      ],
-      "links": [
-        "dev-app"
-      ],
-      "memory": 512
-    }
-
   ]
 }

@@ -27,30 +27,29 @@ services:
   restart: unless-stopped
   container_name: dev-app
   image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/dev-app
-  expose:
-   - 8000
+#  ports:
+#    - '8000:80'
 #  command: >
 #   sh -c "python manage.py makemigrations
 #   && python manage.py migrate
 #   && python manage.py collectstatic --noinput
 #   && python manage.py createsuperuser_if_none_exists
 #   && gunicorn CalculatorAPP.wsgi:application --bind :8000 --timeout 1800"
-  depends_on:
-   - database
+
 #   - redis
 
- nginx:
-   build:
-    context: ./nginx
-   container_name: nginx
-   image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/dev-nginx
-   restart: unless-stopped
-   ports:
-      - '80:80'
-   volumes:
-     - ./web/static:/home/app/web/static
-   depends_on:
-     - dev-app
+# nginx:
+#   build:
+#    context: ./nginx
+#   container_name: nginx
+#   image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/dev-nginx
+#   restart: unless-stopped
+#   ports:
+#      - '80:80'
+#   volumes:
+#     - ./web/static:/home/app/web/static
+#   depends_on:
+#     - dev-app
 
 # worker:
 #  build:

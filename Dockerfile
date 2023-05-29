@@ -1,5 +1,5 @@
 FROM public.ecr.aws/docker/library/python:3.10-alpine3.13
-EXPOSE 8000
+#EXPOSE 8000
 ENV PYTHONUNBUFFERED 1
 # Python deps
 RUN mkdir /web
