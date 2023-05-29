@@ -22,7 +22,8 @@ services:
 
  nginx:
    build:
-    context: ./nginx
+    context: .
+    dockerfile: ./nginx/Dockerfile
    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/dev-nginx
    restart: always
    ports:
