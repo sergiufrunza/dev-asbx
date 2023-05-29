@@ -1,4 +1,4 @@
-web/static
+static
 JobSite/migrations/
 Location/migrations/
 SendEmail/migrations/
