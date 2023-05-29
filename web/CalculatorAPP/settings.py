@@ -18,9 +18,7 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG=config("DEBUG")
 SECRET_KEY = config("SECRET_KEY")
-
 ALLOWED_HOSTS = ["dev-asbx.us-east-2.elasticbeanstalk.com"]
-
 CSRF_COOKIE_NAME = "XSRF-TOKEN"
 
 SUPER_USER_NAME="admin"
