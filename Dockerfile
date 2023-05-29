@@ -8,3 +8,5 @@ COPY docker/requirements.txt /web/
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 COPY ./web /web/
+RUN ["chmod", "+x", "/docker/docker-entrypoint.sh"]
+ENTRYPOINT ["/docker/docker-entrypoint.sh"]
