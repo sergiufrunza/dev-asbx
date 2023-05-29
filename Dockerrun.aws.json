@@ -5,7 +5,7 @@
       "name": "database",
       "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-database:latest",
       "hostname": "database",
-      "essential": true,
+      "essential": false,
       "memory": 1024,
       "portMappings": [
         {
@@ -15,21 +15,56 @@
       ]
     },
     {
+      "name": "redis",
+      "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-redis:latest",
+      "hostname": "redis",
+      "essential": false,
+      "portMappings": [
+        {
+          "hostPort": 6379,
+          "containerPort": 6379
+        }
+      ],
+      "memory": 1024
+    },
+    {
       "name": "dev-app",
       "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-app:latest",
       "hostname": "dev-app",
-      "essential": true,
-      "command": ["python", "manage.py","runserver"],
+      "essential": false,
       "memory": 2048,
       "portMappings": [
         {
-          "hostPort": 80,
+          "hostPort": 8000,
           "containerPort": 8000
         }
       ],
       "links": [
         "database"
       ]
+    },
+    {
+      "name": "nginx",
+      "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-nginx:latest",
+      "hostname": "nginx",
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "links": [
+        "dev-app"
+      ],
+      "memory": 512
+    },
+    {
+      "name": "worker",
+      "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-worker:latest",
+      "hostname": "worker",
+      "essential": false,
+      "memory": 2048
     }
   ]
 }
