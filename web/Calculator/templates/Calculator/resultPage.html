@@ -1,0 +1,20 @@
+{% extends  "ShipsShipyards/main.html" %}
+{% load static %}
+{% block header %}
+    <div class="calculator-result-page-head">
+    <div class="container-logo-page">
+        <img class="logo-header-page" src="/static/Calculator/img/logo_firebrick.svg" alt="logo_firebrick">
+        <a href="/" class="logo-text-link">
+            ASBX.ORG
+        </a>
+
+    </div>
+        <img class="logo-flint-header-page" src="/static/Calculator/img/flint-cooper-logo.png" alt="flint-cooper-logo">
+</div>
+{% endblock %}
+{% block content %}
+    <div class="main-container-result" id="resultPage">
+    {% include "ShipsShipyards/includes/resultCalculatorComponent.html" %}
+    </div>
+    <script type="application/javascript" src={% static "ShipsShipyards/js/main.js"%}></script>
+{% endblock %}

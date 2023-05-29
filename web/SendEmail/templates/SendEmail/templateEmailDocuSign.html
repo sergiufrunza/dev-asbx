@@ -1,0 +1,15 @@
+{% load humanize %}
+{% autoescape off %}
+    <b>REQUEST DOCUSIGN</b>
+    <p><b>Full Name: </b>{{ full_name }}</p>
+    <p><b>Email Address: </b>{{ email_address }}</p>
+    <hr>
+    <p><b>Phone Number: </b>{{ phone }}</p>
+    <p><b>Diagnosis: </b>{{ disease }}</p>
+    <p><b>State: </b>{{ state.name }}</p>
+    <br>
+    <p><b>Maximum Estimated Results:</b></p>
+    <p><b>ER Claims: </b>${{ compensation.er|intcomma }}</p>
+    <p><b>AVG Claims: </b>${{ compensation.avg|intcomma }}</p>
+    <p><b>IR Claims: </b>${{ compensation.ir|intcomma }}</p>
+{% endautoescape %}

@@ -1,0 +1,73 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "database",
+      "image": "{$AWS_ACCOUNT_ID}.dkr.ecr.{$AWS_DEFAULT_REGION}.amazonaws.com/dev-database:latest",
+      "hostname": "database",
+      "essential": true,
+      "memory": 1024,
+      "portMappings": [
+        {
+          "hostPort": 5432,
+          "containerPort": 5432
+        }
+      ]
+    },
+    {
+      "name": "dev-app",
+      "image": "{$AWS_ACCOUNT_ID}.dkr.ecr.{$AWS_DEFAULT_REGION}.amazonaws.com/dev-app:latest",
+      "hostname": "dev-app",
+      "essential": true,
+      "memory": 2048,
+      "portMappings": [
+        {
+          "hostPort": 8000,
+          "containerPort": 8000
+        }
+      ],
+      "links": [
+        "database"
+      ]
+    },
+    {
+      "name": "nginx",
+      "image": "{$AWS_ACCOUNT_ID}.dkr.ecr.{$AWS_DEFAULT_REGION}.amazonaws.com/dev-nginx:latest",
+      "hostname": "nginx",
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "links": [
+        "dev-app"
+      ],
+      "memory": 512
+    },
+    {
+      "name": "redis",
+      "image": "{$AWS_ACCOUNT_ID}.dkr.ecr.{$AWS_DEFAULT_REGION}.amazonaws.com/dev-redis:latest",
+      "hostname": "redis",
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 6379,
+          "containerPort": 6379
+        }
+      ],
+      "memory": 1024
+    },
+    {
+      "name": "worker",
+      "image": "{$AWS_ACCOUNT_ID}.dkr.ecr.{$AWS_DEFAULT_REGION}.amazonaws.com/dev-worker:latest",
+      "hostname": "worker",
+      "essential": true,
+      "links": [
+        "redis"
+      ],
+      "memory": 2048
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+web/static
+JobSite/migrations/
+Location/migrations/
+SendEmail/migrations/
+ShipsShipyards/migrations/
+User/migrations/
+Trusts/migrations/

@@ -1,0 +1,244 @@
+{% csrf_token %}
+{% verbatim %}
+
+    <template v-if="ClientExist" >
+        <div class="overlay-for-popup" v-if="activePopupEr || activePopupIr || activePopupAvg ">
+        <div class="popup-claims-email-container" v-if="activePopupEr">
+            <div class="popup-claims-email-wrapper">
+                <div class="exit-popup">
+                    <img class="exit-popup-svg" src="/static/Calculator/img/x-symbol-svgrepo-com.svg" alt="x-symbol-svgrepo-com" @click="activePopupEr = !activePopupEr">
+                </div>
+
+                <span class="result-text-card-head">
+                    REQUEST LEGAL REPRESENTATION AGREEMENT
+                </span>
+
+                <input class="form-text-input" type="text" placeholder="First And Last Name" v-model="FullName" >
+
+                <input class="form-text-input" id="email-input-form" type="email" placeholder="Your Email" v-model="Email" @input="validateEmail">
+
+                <button class="card-button-start-claims result-red-button" @click.prevent="sendEmailDocuSign">send</button>
+            </div>
+        </div>
+
+
+
+        <div class="popup-claims-email-container" v-if="activePopupAvg">
+            <div class="popup-claims-email-wrapper">
+                <div class="exit-popup">
+                    <img class="exit-popup-svg" src="/static/Calculator/img/x-symbol-svgrepo-com.svg" alt="x-symbol-svgrepo-com" @click="activePopupAvg = !activePopupAvg">
+                </div>
+
+                <span class="result-text-card-head">
+                   REQUEST LEGAL REPRESENTATION AGREEMENT
+                </span>
+
+
+                <input class="form-text-input" type="text" placeholder="First And Last Name" v-model="FullName" >
+
+                <input class="form-text-input" id="email-input-form" type="email" placeholder="Your Email" v-model="Email" @input="validateEmail">
+
+                <button class="card-button-start-claims result-red-button" @click.prevent="sendEmailDocuSign">send</button>
+            </div>
+        </div>
+
+        <div class="popup-claims-email-container" v-if="activePopupIr">
+            <div class="popup-claims-email-wrapper">
+                <div class="exit-popup">
+                    <img class="exit-popup-svg" src="/static/Calculator/img/x-symbol-svgrepo-com.svg" alt="x-symbol-svgrepo-com" @click="activePopupIr = !activePopupIr">
+                </div>
+
+                <span class="result-text-card-head">
+                    REQUEST LEGAL REPRESENTATION AGREEMENT
+                </span>
+
+
+                <input class="form-text-input" type="text" placeholder="First And Last Name" v-model="FullName" >
+
+                <input class="form-text-input" id="email-input-form" type="email" placeholder="Your Email" v-model="Email" @input="validateEmail">
+
+                <button class="card-button-start-claims result-red-button" @click.prevent="sendEmailDocuSign">send</button>
+            </div>
+        </div>
+        </div>
+
+
+
+        <div class="vue-result-container" >
+            <div class="vue-result-wrapper">
+                <div class="container-result head-container-info">
+                    <h2 class="result-text-header">Maximum Estimated Results</h2>
+                    <p class="result-text-sub-header">
+                        Based on the information you provided on <span class="result-red-text">{{currentData}}</span>, these are the preliminary results. Keep in mind that each claim is unique and necessitates a discovery phase. ASBX.org and Flint Cooper will assist you in filing your claims as promptly as possible.
+                    </p>
+                </div>
+
+                <div class="claims-container">
+                    <div class="result-card-claims">
+                        <div class="head-card">
+                            <img src="/static/Calculator/img/arrow_forward.svg" alt="arrow_forward" class="result-card-icon" id="arrow-icon-card">
+                            <span class="result-text-card-head">
+                                er claims
+                            </span>
+                        </div>
+                        <div class="body-card">
+                            <div class="body-card-item">
+                                <img class="result-card-icon" src="/static/Calculator/img/dollar_stack.svg" alt="dollar_stack">
+                                <div class="card-item-info">
+                                    <p class="result-small-text">Max Amount*</p>
+                                    <span class="compensation-text result-red-text">${{ ResultClient.compensation.er.toLocaleString() }}</span>
+                                </div>
+                                
+                            </div>
+                            <div class="body-card-item">
+                                <img class="result-card-icon" src="/static/Calculator/img/in_out_dollar.svg" alt="in_out_dollar">
+                                <div class="card-item-info">
+                                    <p class="result-small-text">Time to receive*</p>
+                                    <span class="compensation-text result-red-text">30 Days</span>
+                                </div>
+                                
+                            </div>
+                            <div class="body-card-item">
+                                <img class="result-card-icon" src="/static/Calculator/img/pi.svg" alt="pi">
+                                    <div class="card-item-info">
+                                    <p class="result-small-text">Legal Fees to File*</p>
+                                    <span class="compensation-text result-red-text">28%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="card-button-start-claims result-red-button" @click="activePopupEr = !activePopupEr">Start er claims</button>
+                        </div>
+
+                    </div>
+                    <div class="result-card-claims">
+                        <div class="head-card">
+                            <img src="/static/Calculator/img/arrow_forward.svg" alt="arrow_forward" class="result-card-icon" id="arrow-icon-card">
+                            <span class="result-text-card-head">
+                                avg claims
+                            </span>
+                        </div>
+                        <div class="body-card">
+                            <div class="body-card-item">
+                                <img class="result-card-icon" src="/static/Calculator/img/dollar_stack.svg" alt="dollar_stack">
+                                <div class="card-item-info">
+                                    <p class="result-small-text">Max Amount*</p>
+                                    <span class="compensation-text result-red-text">${{ ResultClient.compensation.avg.toLocaleString() }}</span>
+                                </div>
+
+                            </div>
+                            <div class="body-card-item">
+                                <img class="result-card-icon" src="/static/Calculator/img/in_out_dollar.svg" alt="in_out_dollar">
+                                <div class="card-item-info">
+                                    <p class="result-small-text">Time to receive*</p>
+                                    <span class="compensation-text result-red-text">90 Days</span>
+                                </div>
+
+                            </div>
+                            <div class="body-card-item">
+                                <img class="result-card-icon" src="/static/Calculator/img/pi.svg" alt="pi">
+                                    <div class="card-item-info">
+                                    <p class="result-small-text">Legal Fees to File*</p>
+                                    <span class="compensation-text result-red-text">33%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="card-button-start-claims result-blue-button" @click="activePopupAvg = !activePopupAvg">Start avg claims</button>
+                        </div>
+
+                    </div>
+                    <div class="result-card-claims">
+                        <div class="head-card">
+                            <img src="/static/Calculator/img/arrow_forward.svg" alt="arrow_forward" class="result-card-icon" id="arrow-icon-card">
+                            <span class="result-text-card-head">
+                                ir claims
+                            </span>
+                        </div>
+                        <div class="body-card">
+                            <div class="body-card-item">
+                                <img class="result-card-icon" src="/static/Calculator/img/dollar_stack.svg" alt="dollar_stack">
+                                <div class="card-item-info">
+                                    <p class="result-small-text">Max Amount*</p>
+                                    <span class="compensation-text result-red-text">${{ ResultClient.compensation.ir.toLocaleString() }}</span>
+                                </div>
+
+                            </div>
+                            <div class="body-card-item">
+                                <img class="result-card-icon" src="/static/Calculator/img/in_out_dollar.svg" alt="in_out_dollar">
+                                <div class="card-item-info">
+                                    <p class="result-small-text">Time to receive*</p>
+                                    <span class="compensation-text result-red-text">Up To 2 Years</span>
+                                </div>
+
+                            </div>
+                            <div class="body-card-item">
+                                <img class="result-card-icon" src="/static/Calculator/img/pi.svg" alt="pi">
+                                    <div class="card-item-info">
+                                    <p class="result-small-text">Legal Fees to File*</p>
+                                    <span class="compensation-text result-red-text">40%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="card-button-start-claims result-green-button" @click="activePopupIr = !activePopupIr">Start ir claims</button>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="container-result">
+                <div class="legend-container">
+                    <div class="legend-info-container">
+                        <h3 class="result-small-text"><b>* Legend:</b></h3>
+                        <p class="result-small-text">
+                            <b>Max Amount</b> refer to the amount total claims that we are able to recover for your case according to your calculator selection.</p>
+                        <p class="result-small-text">
+                            <b>Time to Receive</b> refer to the time you will be able to receive your money after your claims are approved by the trust funds.
+                        </p>
+                        <p class="result-small-text">
+                            <b>Legal Fees</b> refer to the percentage that our firm will charge you after you claims are paid. <b>NO WIN-NO FEE Policy</b>.
+                        </p>
+                    </div>
+                    <div class="contact-form-container">
+                        <span class="result-text-card-head">
+                                NOT SURE WHAT TO DO?
+                        </span>
+                        <p class="result-small-text">Request A Callback Or Call Us 24/7 At Toll-Free:</p>
+
+                        <input class="form-text-input" type="text" placeholder="First And Last Name" >
+
+                        <input class="form-text-input" type="text" placeholder="Your Phone Number" >
+                        <button class="card-button-start-claims result-red-button">send</button>
+
+                    </div>
+                </div>
+
+                <div class="about-info-container">
+                    <div class="logo-and-recovered-container">
+                        <img class="logo-flint" src="/static/Calculator/img/flint-cooper-logo.png" alt="flint-cooper-logo">
+                        <div class="recovered-container">
+                            <span class="result-large-text">$2,000,000,000+</span>
+                            <p class="result-small-text">Recovered by Flint Cooper in asbestos-related litigation</p>
+                        </div>
+                        </div>
+                        <h2 class="result-large-head">TAILORING OUR LEGAL SERVICES TO FIT THE INDIVIDUAL NEEDS OF EACH CLIENT, NOT THE OTHER WAY AROUND.</h2>
+                        <p class="result-normal-text">Flint Cooper’s mission is to achieve justice for victims harmed at the hands of the government, companies and organizations, and empower those whose life, livelihood or lifeblood have been destroyed by injustice.</p>
+                        <p class="result-normal-text">With over 20 years of experience in filing asbestos-related lawsuits and asbestos trust funds claims for victims, Flint Cooper is a top national asbestos law firm with a solid track record of securing over two billion dollars for thousands of clients.</p>
+                        <p class="result-normal-text">Flint Cooper wins trials, not just collects settlements. Over the years, asbestos defendants have settled because they know Flint Cooper can prove they exposed generations of workers, veterans and family members to cancer-causing illnesses. Flint Cooper prepares arduously and is willing to take claims to trial, which is primarily the reason most defendants settle sooner: to sidestep the uncertainty of a jury’s verdict, to dodge embarrassment in the media, to spare themselves greater financial loss, and most importantly, to avoid facing Flint Cooper asbestos attorneys in court.</p>
+                </div>
+
+
+                    </div>
+
+
+
+            </div>
+
+        </div>
+    </template>
+<template v-else></template>
+<div class="copyright-txt" id="copyright-txt"></div>
+
+
+{% endverbatim %}

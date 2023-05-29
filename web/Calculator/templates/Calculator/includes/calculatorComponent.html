@@ -1,0 +1,373 @@
+{% csrf_token %}
+{% verbatim %}
+
+
+<transition name="form-slide-fade" mode="out-in">
+
+    <div class="vue-form-container" v-if="activeStep == 1" key="1">
+        <div class="vue-form-header">
+            <h2 class="form-text-header">Who Was Exposed To Asbestos?</h2>
+            <p class="form-text-sub-header">Please select the most relevant option to indicate whether you or a family member has experienced direct exposure to asbestos.</p>
+            </div>
+        <div class="vue-form-wrapper">
+            <div class="button-wrapper">
+            <button class="form-button button-red" @click.prevent="goToStep(2), Client.victim = 'self'">I WAS EXPOSED
+            </button>
+            <button class="form-button" @click.prevent="goToStep(5), Client.victim = 'family'">FAMILY MEMBER</button>
+            </div>
+        </div>
+        <div class="vue-form-footer">
+        </div>
+    </div>
+
+
+    <div class="vue-form-container" v-if="activeStep == 2" key="2">
+        <div class="vue-form-header">
+            <h2 v-if="Client.victim ==='self'" class="form-text-header">Are you a {{ Client.resident_state.name }} Resident?</h2>
+            <h2 v-else-if="Client.victim ==='family' && Client.lives ==='yes' " class="form-text-header">In which state your loved one reside?</h2>
+            <h2 v-else class="form-text-header">In which state did your loved one reside before passing?</h2>
+            <p class="form-text-sub-header" v-if="Client.victim ==='self'">If not please select your state<p>
+
+        </div>
+        <div class="vue-form-wrapper">
+            <select name="selectState" class="select-dropdown" v-model="Client.resident_state">
+                <option  :value="Client.resident_state">
+                    {{ Client.resident_state.name }}
+                </option>
+                <option v-for="state in listStates" :value="state">
+                    {{ state.name }}
+                </option>
+            </select>
+        </div>
+        <div class="vue-form-footer">
+            <button class="form-button-next" @click.prevent="goToStep(3)">
+                NEXT STEP
+            </button>
+        </div>
+    </div>
+
+    <div class="vue-form-container" v-if="activeStep == 3" key="3">
+        <div class="vue-form-header">
+
+          <h2 class="form-text-header">Please select diagnosis</h2>
+        </div>
+        <div class="vue-form-wrapper">
+            <fieldset class="form-select-container" id="form-select-container-col">
+                    <div class="field-element" v-for="disease in listDiseases" >
+                    <input class="form-input-select" type="radio" :id="disease.name" :value="disease.name" v-model="Client.disease">
+                    <label class="form-select-label" :for="disease.name">{{disease.name}}</label>
+                    </div>
+            </fieldset>
+        </div>
+        <div class="vue-form-footer">
+            <button v-if="Client.lives === 'no'" class="form-button-next"
+                    @click.prevent="Client.disease === 'Lung Cancer' || Client.disease === 'Mesothelioma'  ? goToStep(9) : goToStep(17)">
+                NEXT STEP
+            </button>
+            <button v-else class="form-button-next"
+                    @click.prevent="Client.disease === 'Lung Cancer' ? goToStep(16) : Client.disease === 'Mesothelioma' ? goToStep(14) : goToStep(16)">
+                NEXT STEP
+            </button>
+        </div>
+    </div>
+
+    <div class="vue-form-container" v-if="activeStep == 4" key="4">
+        <div class="vue-form-header">
+            <h2 class="form-text-header">In which state?</h2>
+        </div>
+        <div class="vue-form-wrapper">
+            <select name="selectState" class="select-dropdown" v-model="currentWorkState">
+                <option  :value="{}" selected>
+                    Select state
+                </option>
+                <option v-for="state in listStates" :value="state">
+                    {{ state.name }}
+                </option>
+            </select>
+        </div>
+        <div class="vue-form-footer">
+            <button class="form-button-next" @click.prevent="goToStep(7)">
+                NEXT STEP
+            </button>
+        </div>
+    </div>
+
+
+    <div class="vue-form-container" v-if="activeStep == 5" key="5">
+        <div class="vue-form-header">
+            <h2 class="form-text-header">Is your loved one living?</h2>
+        </div>
+        <div class="vue-form-wrapper">
+            <fieldset class="form-select-container" id="form-select-container-row">
+
+                    <input id="yeslive" class="form-input-select" type="radio" value="yes" v-model="Client.lives">
+                    <label class="form-select-label" for="yeslive">Yes</label>
+
+                    <input id="nolive" class="form-input-select" type="radio" value="no" v-model="Client.lives">
+                    <label class="form-select-label" for="nolive">No</label>
+
+            </fieldset>
+        </div>
+        <div class="vue-form-footer">
+            <button class="form-button-next" @click.prevent="goToStep(2)">NEXT STEP</button>
+        </div>
+    </div>
+
+    <div class="vue-form-container" v-if="activeStep == 6" key="6">
+        <div class="vue-form-header">
+
+            <h2 class="form-text-header">Any history of smoking?</h2>
+
+        </div>
+        <div class="vue-form-wrapper">
+            <fieldset class="form-select-container" id="form-select-container-row">
+                    <input id="yessmoker" class="form-input-select" type="radio" value="yes" v-model="Client.smoker">
+                    <label class="form-select-label" for="yessmoker">Yes</label>
+
+                    <input id="nosmoker" class="form-input-select" type="radio" value="no" v-model="Client.smoker">
+                    <label class="form-select-label" for="nosmoker">No</label>
+            </fieldset>
+        </div>
+        <div class="vue-form-footer">
+            <button class="form-button-next" @click.prevent="goToStep(14)">NEXT STEP</button>
+        </div>
+    </div>
+
+
+    <div class="vue-form-container" v-if="activeStep == 7" key="7">
+        <div class="vue-form-header">
+
+            <h2 v-if="Client.victim == 'self'" class="form-text-header">In which industries have you worked in {{ currentWorkState.name }}?</h2>
+            <h2 v-if="Client.victim == 'family'" class="form-text-header">In which industries have your loved one worked in {{ currentWorkState.name }}?</h2>
+
+            <p class="form-text-sub-header">Select all industries that apply</p>
+
+        </div>
+        <div class="vue-form-wrapper">
+            <fieldset class="form-select-container" id="form-select-container-col" >
+                <div class="field-element" v-for="industry in listIndustries" v-if="!(industry.name === 'Other')">
+                    <input class="form-input-select" type="checkbox" :id="industry.name" :value="industry.name" v-model="currentJobIndutries">
+                    <label class="form-select-label" :for="industry.name">{{industry.name}}</label>
+                </div>
+                <transition name="other-element">
+                    <div class="field-element" v-if="currentJobIndutries.length == 0 || currentJobIndutries[0] === 'Other'">
+                    <input class="form-input-select" type="checkbox" id="Other" value="Other" v-model="currentJobIndutries">
+                    <label class="form-select-label" for="Other">Other Asbestos Exposure Sources</label>
+                    </div>
+                </transition>
+            </fieldset>
+        </div>
+        <div class="vue-form-footer">
+           <!--  <button class="form-button-next" @click.prevent="Client.disease === 'Mesothelioma' ? goToStep(12) : goToStep(8)">NEXT STEP</button> -->
+            <button class="form-button-next" @click.prevent="goToStep(13)">NEXT STEP</button>
+        </div>
+    </div>
+
+    <div class="vue-form-container" v-if="activeStep == 9" key="9">
+        <div class="vue-form-header">
+           <h2 class="form-text-header">When did your loved one pass away?</h2>
+        </div>
+        <div class="vue-form-wrapper">
+            <fieldset class="form-select-container" id="form-select-container-col">
+<div class="field-element">
+                    <input class="form-input-select" :id="Client.SOLDate.current" type="radio" :value="Client.SOLDate.current" v-model="Client.yearForDeath">
+                    <label class="form-select-label" :for="Client.SOLDate.current">{{Client.SOLDate.current}}</label>
+</div>
+<div class="field-element">
+                    <input class="form-input-select" type="radio" :id="Client.SOLDate.recently" :value="Client.SOLDate.recently" v-model="Client.yearForDeath">
+                    <label class="form-select-label" :for="Client.SOLDate.recently">{{Client.SOLDate.recently}}</label>
+</div>
+    <div class="field-element">
+                    <input class="form-input-select" type="radio" id="before" value="before" v-model="Client.yearForDeath">
+                    <label for="before" class="form-select-label">{{Client.SOLDate.before}}</label>
+</div>
+            </fieldset>
+        </div>
+        <div class="vue-form-footer">
+            <button class="form-button-next" @click.prevent="Client.yearForDeath ==='before' ? goToStep(17) : Client.disease ==='Lung Cancer' ? goToStep(6) : goToStep(14)">NEXT</button>
+        </div>
+    </div>
+
+    <div class="vue-form-container" v-if="activeStep == 10" key="10">
+        <div class="vue-form-header">
+
+            <h2 class="form-text-header">Is there anything else would you like to mention?</h2>
+
+        </div>
+        <div class="vue-form-wrapper" id="vue-form-wrapper">
+            <fieldset class="form-select-container" id="form-select-container-row">
+
+                    <input id="yesabout" class="form-input-select" type="radio" :value="true" v-model="aboutAnything">
+                    <label class="form-select-label" for="yesabout">Yes</label>
+
+                    <input id="noabout" class="form-input-select" type="radio" :value="false" v-model="aboutAnything">
+                    <label class="form-select-label" for="noabout">No</label>
+
+            </fieldset>
+            <transition name="other-element">
+            <div class="form-textarea-wrapper" v-if="aboutAnything">
+                <textarea class="form-field-textarea-input" placeholder="Additional Info"
+                          v-model="Client.aboutAnything" cols="30" rows="3"></textarea>
+            </div>
+            </transition>
+        </div>
+        <div class="vue-form-footer">
+            <button class="form-button-next" @click.prevent="goToStep(11)">NEXT</button>
+        </div>
+    </div>
+
+    <div class="vue-form-container" v-if="activeStep == 11" key="11">
+        <div class="vue-form-header">
+         <h2 class="form-text-header">You qualify for compensation</h2>
+            <p class="form-text-sub-header">For your security, get a verification code via text message<p>
+        </div>
+        <div class="vue-form-wrapper">
+
+                    <input class="form-field-text-input" id="phone-validation" name="phoneValidation" type="text"
+                           placeholder="Phone Number" v-model="Client.phone" @input="validatePhoneNumber" maxlength="17">
+        </div>
+        <div class="vue-form-footer">
+            <button class="form-button-next" @click.prevent=" goToStep(12)">NEXT</button>
+        </div>
+    </div>
+
+    <div class="vue-form-container" v-if="activeStep == 12" key="12">
+        <div class="vue-form-header">
+        <h2 class="form-text-header">Validate your phone number</h2>
+            <p class="form-text-sub-header">Enter the verification code sent to your mobile phone number through a text message<p>
+        </div>
+        <div class="vue-form-wrapper">
+            <input class="form-field-text-input" type="text" placeholder="Code" v-model="Client.code" maxlength="4">
+        </div>
+        <div class="vue-form-footer">
+            <button class="form-button-next" @click.prevent="checkCode">NEXT</button>
+        </div>
+    </div>
+
+
+    <div class="vue-form-container" v-if="activeStep == 13" key="13">
+        <div class="vue-form-header">
+            <h2 v-if="Client.victim == 'self'" class="form-text-header">What kind of job have you held in {{ currentWorkState.name }}?</h2>
+            <h2 v-if="Client.victim == 'family'" class="form-text-header">What kind of job have your loved one held in {{ currentWorkState.name }}?</h2>
+            <p class="form-text-sub-header">Select all job types that apply</p>
+        </div>
+        <div class="vue-form-wrapper" id="vue-form-wrapper">
+            <fieldset class="form-select-container" id="form-select-container-col" >
+                <div class="field-element" v-for="group in jobGroups">
+                    <input class="form-input-select" type="checkbox" :id="group.name" :value="group.name" v-model="currentJobGroups">
+                    <label class="form-select-label" :for="group.name">{{group.name}}</label>
+                </div>
+            </fieldset>
+        </div>
+        <div class="vue-form-footer">
+            <button class="form-button-next" @click.prevent="workStateList.push(currentWorkState) | goToStep(15)">NEXT STEP</button>
+        </div>
+    </div>
+
+
+    <div class="vue-form-container" v-if="activeStep == 14" key="14">
+        <div class="vue-form-header">
+
+            <h2 v-if="Client.victim == 'self'" class="form-text-header">Have you worked in the state of {{Client.resident_state.name}} before 1982?</h2>
+            <h2 v-if="Client.victim == 'family'" class="form-text-header">Was your loved one worked in the state of {{Client.resident_state.name}} before 1982?</h2>
+
+        </div>
+        <div class="vue-form-wrapper">
+            <fieldset class="form-select-container" id="form-select-container-row">
+
+                    <input id="yeswork" class="form-input-select" type="radio" :value="true" v-model="WorkInState">
+                    <label class="form-select-label" for="yeswork" @click="addWorkState">Yes</label>
+
+                    <input id="nowork" class="form-input-select" type="radio" :value="false" v-model="WorkInState" >
+                    <label class="form-select-label" for="nowork" @click="deleteWorkState">No</label>
+
+            </fieldset>
+        </div>
+        <div class="vue-form-footer">
+            <button class="form-button-next" @click.prevent="WorkInState ? goToStep(7) : goToStep(15)">NEXT STEP</button>
+        </div>
+    </div>
+
+    <div class="vue-form-container" v-if="activeStep == 15" key="15">
+        <div class="vue-form-header">
+
+            <h2 v-if="(Client.victim == 'self') && (workStateList.length > 0)" class="form-text-header">Beside <span v-for=" state in workStateList">{{ state.name }}, </span>did you worked in any other state prior to 1982?</h2>
+            <h2 v-if="(Client.victim == 'family') && (workStateList.length > 0)" class="form-text-header">Beside <span v-for=" state in workStateList">{{ state.name }}, </span>did your loved one worked in any other state prior to 1982?</h2>
+            <h2 v-if="(Client.victim == 'self') && (workStateList.length == 0)" class="form-text-header">Did you worked in any other state prior to 1982?</h2>
+            <h2 v-if="(Client.victim == 'family') && (workStateList.length == 0)" class="form-text-header">Did your loved one worked in any other state prior to 1982?</h2>
+        </div>
+        <div class="vue-form-wrapper">
+            <fieldset class="form-select-container" id="form-select-container-row">
+
+                    <input id="yeswork" class="form-input-select" type="radio" :value="true" v-model="WorkInState">
+                    <label class="form-select-label" for="yeswork">Yes</label>
+
+                    <input id="nowork" class="form-input-select" type="radio" :value="false" v-model="WorkInState">
+                    <label class="form-select-label" for="nowork">No</label>
+
+            </fieldset>
+        </div>
+        <div class="vue-form-footer">
+            <button class="form-button-next" @click.prevent="WorkInState ? goToStep(4) : workStateList.length == 0 ? goToStep(17) : goToStep(10)">NEXT STEP</button>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="vue-form-container" v-if="activeStep == 16" key="16">
+        <div class="vue-form-header">
+            <h2 class="form-text-header">In which year were you diagnosed with {{ Client.disease }}?</h2>
+        </div>
+        <div class="vue-form-wrapper">
+
+                   <fieldset class="form-select-container" id="form-select-container-col">
+                    <div class="field-element">
+                    <input class="form-input-select" :id="Client.SOLDate.current" type="radio" :value="Client.SOLDate.current" v-model="Client.yearForDiagnosed">
+                    <label class="form-select-label" :for="Client.SOLDate.current">{{Client.SOLDate.current}}</label>
+</div>
+                    <div class="field-element">
+                    <input class="form-input-select" type="radio" :id="Client.SOLDate.recently" :value="Client.SOLDate.recently" v-model="Client.yearForDiagnosed">
+                    <label class="form-select-label" :for="Client.SOLDate.recently">{{Client.SOLDate.recently}}</label>
+                    </div>
+                        <div class="field-element">
+                    <input class="form-input-select" type="radio" id="before" value="before" v-model="Client.yearForDiagnosed">
+                    <label for="before" class="form-select-label">{{Client.SOLDate.before}}</label>
+                   </div>
+                   </fieldset>
+        </div>
+        <div class="vue-form-footer">
+            <button class="form-button-next" @click.prevent="Client.yearForDiagnosed ==='before' ? goToStep(17) : Client.disease ==='Lung Cancer' ? goToStep(6) : goToStep(14)">NEXT</button>
+        </div>
+    </div>
+
+
+    <div class="vue-form-container" id="vue-form-container-form" v-if="activeStep == 17" key="17">
+        <div class="exit-popup" id="exit-popup">
+            <img class="exit-popup-svg" src="/static/Calculator/img/x-symbol-svgrepo-com.svg" alt="x-symbol-svgrepo-com" @click="goToStep(1)">
+        </div>
+        <div class="vue-form-wrapper">
+            <div class="email-form-wrapper">
+
+                <span class="result-text-card-head">
+                    NOT SURE WHAT TO DO?
+                </span>
+
+                <p class="result-small-text">Request A Callback Or Call Us 24/7 At Toll-Free:</p>
+
+                <input class="form-text-input" type="text" placeholder="First And Last Name" >
+
+                <input class="form-text-input" type="email" placeholder="Your Email">
+
+                <button class="card-button-start-claims result-red-button" @click="goToStep(1)">send</button>
+            </div>
+            </div>
+        </div>
+
+
+</transition>
+
+<div class="copyright-txt" id="copyright-txt"></div>
+
+{% endverbatim %}

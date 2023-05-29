@@ -1,0 +1,45 @@
+{% extends  "ShipsShipyards/main.html" %}
+{% load static %}
+{% block header %}
+    <div class="calculator-page-head">
+    <div class="container-logo-page">
+        <img class="logo-header-page" src="{% static 'common/img/logo_firebrick.svg'%}" alt="logo_firebrick">
+        <a href="/" class="logo-text-link">
+            ASBX.ORG
+        </a>
+    </div>
+</div>
+
+{% endblock %}
+{% block content %}
+    <h1>{{ship.name}}</h1>
+    <br>
+    <br>
+    <h2>{{ship.shipyard.name}}</h2>
+    <h2>{{ship.shipyard.city}}</h2>
+    <h2>{{ship.shipyard.state}}</h2>
+    <h2>{{ship.build_from}}</h2>
+    <h2>{{ship.build_to}}</h2>
+    {% for man in manufacturers %}
+        <table border="1" style="background-color:#FFFFCC;border-collapse:collapse;border:1px solid #000000;color:#000000;width:50%" cellpadding="5" cellspacing="0">
+<thead>
+  <tr>
+    <th>{{ man.name }}</th>
+  </tr>
+</thead>
+<tbody>
+        {%   for equipment in man.equipment %}
+
+
+  <tr>
+    <td>{{ equipment.name }} </td>
+    <td>{{ equipment.nr }}</td>
+  </tr>
+            {% endfor %}
+</tbody>
+</table>
+
+<br>
+    {% endfor %}
+
+{% endblock %}

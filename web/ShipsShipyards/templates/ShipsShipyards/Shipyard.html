@@ -1,0 +1,23 @@
+{% extends  "ShipsShipyards/main.html" %}
+{% load static %}
+{% block header %}
+    <div class="calculator-page-head">
+    <div class="container-logo-page">
+        <img class="logo-header-page" src="{% static 'common/img/logo_firebrick.svg'%}" alt="logo_firebrick">
+        <a href="/" class="logo-text-link">
+            ASBX.ORG
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block content %}
+    <h1>{{shipyard.name}} {{shipyard.city}} {{ shipyard.state }}</h1>
+    <ul>
+    {% for ship in ships %}
+    <li>{{ ship.name }}</li>
+    </ul>
+    {% endfor %}
+
+{% endblock %}

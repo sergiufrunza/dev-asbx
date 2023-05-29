@@ -1,0 +1,42 @@
+{% load humanize %}
+{% autoescape off %}
+    <p><b>Phone Number: </b>{{ phone }}</p>
+    {% if victim == 'self' %}
+    <p><b>Who was diagnosed: </b>I was exposed</p>
+        {% else %}
+        <p><b>Who was diagnosed: </b>Family member was exposed</p>
+        <p><b>Is loved one living: </b>{{ lives }}</p>
+        {% if lives == "no" %}
+        <p><b>When deceased: </b>{{ deceased }}</p>
+        {% endif %}
+    {% endif %}
+    {% if disease == "Lung Cancer" %}
+        <p><b>Smoking: </b>{{ smoker }}</p>
+    {% endif %}
+    <p><b>Diagnosis: </b>{{ disease }}</p>
+    {% if diagnosed %}
+        <p><b>Diagnosed: </b>{{ diagnosed }}</p>
+    {% endif %}
+    <p><b>State: </b>{{ state.name }}</p>
+    <p><b>Work history: </b></p>
+    {% for state in work_states %}
+        <p><b>-{{state.name}}</b></p>
+        <p><b>Industry:</b></p>
+        {% for industry in state.industry %}
+            <span>{{ industry }}, </span>
+            {% endfor %}
+        <p><b>Job Type:</b></p>
+        {% for group in state.jobgroup %}
+            <span>{{ group }}, </span>
+            {% endfor %}
+    {% endfor %}
+
+    {% if about %}
+    <p><b>Any thing else to add: </b>{{ about }}</p>
+    {% endif %}
+    <br>
+    <p><b>Maximum Estimated Results:</b></p>
+    <p><b>ER Claims: </b>${{ compensation.er|intcomma }}</p>
+    <p><b>AVG Claims: </b>${{ compensation.avg|intcomma }}</p>
+    <p><b>IR Claims: </b>${{ compensation.ir|intcomma }}</p>
+{% endautoescape %}
