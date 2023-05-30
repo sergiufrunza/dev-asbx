@@ -18,27 +18,28 @@
       "name": "redis",
       "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-redis:latest",
       "hostname": "redis",
-      "essential": false,
+      "essential": true,
       "portMappings": [
         {
           "hostPort": 6379,
           "containerPort": 6379
         }
       ],
-      "memory": 1024
+      "memory": 512
     },
     {
       "name": "dev-app",
       "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-app:latest",
       "hostname": "dev-app",
       "essential": false,
-      "memory": 2048,
+      "memory": 1024,
       "portMappings": [
         {
           "hostPort": 8000,
           "containerPort": 8000
         }
       ],
+      "command": ["gunicorn","CalculatorAPP.wsgi:application","--bind",":8000","--timeout ","1800"],
       "links": [
         "database"
       ]
@@ -64,6 +65,7 @@
       "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-worker:latest",
       "hostname": "worker",
       "essential": false,
+      "command": ["celery","-A","CalculatorAPP","worker","-l ","info"],
       "memory": 2048
     }
   ]

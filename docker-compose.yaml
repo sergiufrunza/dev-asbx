@@ -4,6 +4,7 @@ services:
  database:
   build:
    context: ./database
+  hostname: database
   image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/dev-database
   environment:
    - POSTGRES_DB=dbname
@@ -13,26 +14,49 @@ services:
  redis:
   build:
    context: ./redis
+  hostname: redis
   image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/dev-redis
+  expose:
+   - 6379
 
  dev-app:
   build:
    context: .
+  hostname: dev-app
   image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/dev-app
+  expose:
+   - 8000
+  command: >
+   sh -c "python manage.py makemigrations
+   && python manage.py migrate
+   && python manage.py collectstatic --noinput
+   && python manage.py createsuperuser_if_none_exists
+   && gunicorn CalculatorAPP.wsgi:application --bind :8000 --timeout 1800"
+  depends_on:
+   - database
+   - redis
 
  nginx:
    build:
     context: .
     dockerfile: ./nginx/Dockerfile
+   hostname: nginx
    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/dev-nginx
    restart: always
    ports:
       - '80:80'
-   volumes:
-     - ./web/static:/home/app/web/static
+   depends_on:
+    - dev-app
 
  worker:
   build:
    context: .
   image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/dev-worker
+  command: celery -A CalculatorAPP worker -l info
+  links:
+   - redis
+  depends_on:
+   - redis
+   - dev-app
+   - database
 

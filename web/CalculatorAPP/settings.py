@@ -19,6 +19,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG=config("DEBUG")
 SECRET_KEY = config("SECRET_KEY")
 ALLOWED_HOSTS = ["dev-asbx.us-east-2.elasticbeanstalk.com"]
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://dev-asbx.us-east-2.elasticbeanstalk.com:8000",
+    "http://dev-asbx.us-east-2.elasticbeanstalk.com:8000",
+]
+CSRF_TRUSTED_ORIGINS = [
+    "http://dev-asbx.us-east-2.elasticbeanstalk.com:8000",
+    "http://dev-asbx.us-east-2.elasticbeanstalk.com:8000",
+    ]
+
 CSRF_COOKIE_NAME = "XSRF-TOKEN"
 
 SUPER_USER_NAME="admin"
@@ -141,7 +152,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'common', 'static'),
     os.path.join(BASE_DIR, 'JobSite', 'static'),
     os.path.join(BASE_DIR, 'ShipsShipyards', 'static'),
-    os.path.join(BASE_DIR, 'Trusts', 'static'),
     os.path.join(BASE_DIR, 'User', 'static'),
     os.path.join(BASE_DIR, 'Location', 'static'),
 ]
