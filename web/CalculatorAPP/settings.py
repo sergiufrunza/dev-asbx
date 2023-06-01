@@ -21,15 +21,6 @@ SECRET_KEY = config("SECRET_KEY")
 ALLOWED_HOSTS = ["dev-asbx.us-east-2.elasticbeanstalk.com"]
 
 
-CORS_ALLOWED_ORIGINS = [
-    "http://dev-asbx.us-east-2.elasticbeanstalk.com:8000",
-    "http://dev-asbx.us-east-2.elasticbeanstalk.com:8000",
-]
-CSRF_TRUSTED_ORIGINS = [
-    "http://dev-asbx.us-east-2.elasticbeanstalk.com:8000",
-    "http://dev-asbx.us-east-2.elasticbeanstalk.com:8000",
-    ]
-
 CSRF_COOKIE_NAME = "XSRF-TOKEN"
 
 SUPER_USER_NAME="admin"
@@ -91,11 +82,12 @@ WSGI_APPLICATION = 'CalculatorAPP.wsgi.application'
 if config("MODE") == "dev":
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'HOST':config("DEV_DATABASE_HOST", default='dbname'),
-            'NAME':config("DEV_DATABASE_NAME", default='dbuser'),
-            'USER':config("DEV_DATABASE_USER", default='pass'),
-        'PASSWORD':config("DEV_DATABASE_PASS", default='database'),
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'HOST':config("DEV_DATABASE_HOST", default='database'),
+            'NAME':config("DEV_DATABASE_NAME", default='dbname'),
+            'USER':config("DEV_DATABASE_USER", default='dbuser'),
+        'PASSWORD':config("DEV_DATABASE_PASS", default='pass'),
+            'POST': '5400',
 
         }
     }
