@@ -25,7 +25,7 @@
           "containerPort": 6379
         }
       ],
-      "memory": 512
+      "memory": 256
     },
     {
       "name": "dev-app",
