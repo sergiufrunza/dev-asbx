@@ -6,7 +6,7 @@
       "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-database:latest",
       "hostname": "database",
       "essential": false,
-      "memory": 1024,
+      "memory": 512,
       "portMappings": [
         {
           "hostPort": 5400,
@@ -66,7 +66,7 @@
       "hostname": "worker",
       "essential": false,
       "command": ["celery","-A","CalculatorAPP","worker","-l ","info"],
-      "memory": 2048
+      "memory": 1024
     }
   ]
 }
