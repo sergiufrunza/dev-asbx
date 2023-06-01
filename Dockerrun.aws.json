@@ -64,6 +64,7 @@
       "name": "worker",
       "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-worker",
       "hostname": "worker",
+      "command": ["celery","-A","CalculatorAPP","worker","-l ","info"],
       "essential": false,
       "memory": 1024,
       "links": [
