@@ -1,11 +1,8 @@
 version: '3.7'
 
-
-
+services:
 #      "command": ["gunicorn","CalculatorAPP.wsgi:application","--bind",":8000","--timeout ","1800"],
 #             "command": ["celery","-A","CalculatorAPP","worker","-l ","info"],
-services:
-
  database:
   build:
    context: ./database
