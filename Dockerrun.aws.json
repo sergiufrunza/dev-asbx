@@ -9,8 +9,8 @@
       "memory": 512,
       "portMappings": [
         {
-          "hostPort": 5400,
-          "containerPort": 5432
+          "hostPort": 5432,
+          "containerPort": 5400
         }
       ]
     },
@@ -67,7 +67,7 @@
       "memory": 1024,
       "links": [
         "dev-app",
-        "datsabase"
+        "database"
       ]
     }
   ]
