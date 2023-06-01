@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "database",
-      "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-database",
+      "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-database:latest",
       "hostname": "database",
       "essential": true,
       "memory": 512,
@@ -16,7 +16,7 @@
     },
     {
       "name": "redis",
-      "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-redis",
+      "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-redis:latest",
       "hostname": "redis",
       "essential": true,
       "portMappings": [
@@ -29,7 +29,7 @@
     },
     {
       "name": "dev-app",
-      "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-app",
+      "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-app:latest",
       "hostname": "dev-app",
       "essential": false,
       "memory": 1024,
@@ -45,7 +45,7 @@
     },
     {
       "name": "nginx",
-      "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-nginx",
+      "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-nginx:latest",
       "hostname": "nginx",
       "essential": true,
       "portMappings": [
@@ -61,7 +61,7 @@
     },
     {
       "name": "worker",
-      "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-worker",
+      "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-worker:latest",
       "hostname": "worker",
       "essential": false,
       "memory": 1024,
