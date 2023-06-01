@@ -39,7 +39,6 @@
           "containerPort": 8000
         }
       ],
-      "command": ["gunicorn","CalculatorAPP.wsgi:application","--bind",":8000","--timeout ","1800"],
       "links": [
         "database"
       ]
@@ -65,7 +64,6 @@
       "image": "%AWS_ACCOUNT_ID%.dkr.ecr.%AWS_DEFAULT_REGION%.amazonaws.com/dev-worker:latest",
       "hostname": "worker",
       "essential": false,
-      "command": ["celery","-A","CalculatorAPP","worker","-l ","info"],
       "memory": 1024
     }
   ]
