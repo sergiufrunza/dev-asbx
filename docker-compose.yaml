@@ -30,6 +30,8 @@ services:
    context: .
   hostname: dev-app
   image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/dev-app
+  env_file:
+   - ./web/.env
   expose:
    - 8000
   depends_on:
@@ -53,6 +55,8 @@ services:
    dockerfile: ./worker/Dockerfile
   hostname: worker
   image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/dev-worker
+  env_file:
+   - ./web/.env
   links:
    - redis
   depends_on:
