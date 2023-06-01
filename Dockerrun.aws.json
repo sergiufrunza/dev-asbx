@@ -40,7 +40,8 @@
         }
       ],
       "links": [
-        "database"
+        "database",
+        "redis"
       ]
     },
     {
@@ -67,7 +68,8 @@
       "memory": 1024,
       "links": [
         "dev-app",
-        "database"
+        "database",
+        "redis"
       ]
     }
   ]
