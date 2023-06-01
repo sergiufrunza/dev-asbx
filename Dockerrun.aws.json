@@ -25,7 +25,7 @@
           "containerPort": 6379
         }
       ],
-      "memory": 256
+      "memory": 512
     },
     {
       "name": "dev-app",
@@ -67,7 +67,6 @@
       "essential": false,
       "memory": 1024,
       "links": [
-        "dev-app",
         "database",
         "redis"
       ]
