@@ -18,7 +18,7 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG=config('DEBUG', cast=bool)
 SECRET_KEY = config("SECRET_KEY")
-ALLOWED_HOSTS = ["demo.asbx.org","www.demo.asbx.org"]
+ALLOWED_HOSTS = ["dev-asbx.us-east-2.elasticbeanstalk.com"]
 
 
 CSRF_COOKIE_NAME = "XSRF-TOKEN"
